@@ -1,6 +1,24 @@
-from django.shortcuts import render, redirect
-from products.models import Product, Review
-from products.forms import ProductCreateForm, ReviewCreateForm
+from django.shortcuts import HttpResponse, render, redirect
+from datetime import datetime
+
+from products.forms import ProductCreateForm
+from products.models import Product
+
+
+def hello(request):
+    if request.method == 'GET':
+        return HttpResponse('hello, its my first project! Enjoy! :)')
+
+
+def now_date(request):
+    now_time = datetime.now()
+    if request.method == 'GET':
+        return HttpResponse(now_time)
+
+
+def goodbye(request):
+    if request.method == 'GET':
+        return HttpResponse('Goodbye user!')
 
 
 def main_view(request):
@@ -12,36 +30,21 @@ def products_view(request):
     if request.method == 'GET':
         products = Product.objects.all()
         context = {
-            'products': products
+            'products': products,
+            'user': request.user
         }
         return render(request, 'products/products.html', context=context)
 
 
-def product_detail_view(request, id):
+def products_detail_view(request, id):
     if request.method == 'GET':
         product = Product.objects.get(id=id)
         context = {
             'product': product,
-            'reviews': product.review_set.all(),
-            'form': ReviewCreateForm
+            'review': product.review_set.all(),
+            'user': request.user
         }
         return render(request, 'products/detail.html', context=context)
-    if request.method == "POST":
-        product = Product.objects.get(id=id)
-        form = ReviewCreateForm(data=request.POST)
-
-    if form.is_valid():
-        Review.objects.create(
-            text=form.cleaned_data.get('text'),
-            product_id=id
-        )
-
-    context = {
-        'product': product,
-        'reviews': product.review_set.all(),
-        'form': form
-    }
-    return render(request, 'products/detail.html', context=context)
 
 
 def product_create_view(request):
