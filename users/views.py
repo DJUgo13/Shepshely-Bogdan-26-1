@@ -22,7 +22,7 @@ def register_view(request):
                 )
                 return redirect('/users/register/')
             else:
-                form.add_error('password1', 'Чет не так, соболезную')
+                form.add_error('password1', 'Чет ты хуйню городишь')
 
         return render(request, 'users/register.html', context={'form': form})
 
@@ -47,7 +47,7 @@ def login_view(request):
                 login(request, user)
                 return redirect('/products/')
             else:
-                form.add_error('username', 'lox')
+                form.add_error('username', 'пидр')
 
         return render(request, 'users/login.html', context={'form': form})
 
