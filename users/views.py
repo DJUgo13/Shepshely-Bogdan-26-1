@@ -18,9 +18,9 @@ def register_view(request):
             if form.cleaned_data.get('password1') == form.cleaned_data.get('password2'):
                 User.objects.create_user(
                     username=form.cleaned_data.get('username'),
-                    password1=form.cleaned_data.get('password1')
+                    password=form.cleaned_data.get('password1')
                 )
-                return redirect('/users/register/')
+                return redirect('/users/login/')
             else:
                 form.add_error('password1', 'Чет ты хуйню городишь')
 
@@ -30,12 +30,12 @@ def register_view(request):
 def login_view(request):
     if request.method == "GET":
         context = {
-            'context': LoginForm
+            'form': LoginForm
         }
 
         return render(request, 'users/login.html', context=context)
 
-    if request.method == "GET":
+    if request.method == "POST":
         form = LoginForm(data=request.POST)
 
         if form.is_valid():
