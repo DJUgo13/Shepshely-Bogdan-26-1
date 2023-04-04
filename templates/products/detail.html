@@ -13,16 +13,20 @@
             justify-content: space-between;
         }
 
-        .comments {
+        .review {
             margin-top: 30px;
         }
 
-        .comment_block {
+        .review_block {
             background: #242b2e;
             color: #fff;
             padding: 10px;
             margin-bottom: 20px;
             border-radius: 5px;
+        }
+
+        .image > img {
+            max-width: 100%;
         }
     </style>
     <div class="product_block">
@@ -32,9 +36,9 @@
             {% endif %}
         </div>
         <div class="info">
-            <h1>{{ product.title }}</h1>
+            <h1>{{ product.name }}</h1>
+            <h4>Price: {{ product.price }}$</h4>
             <h4>{{ product.description }}</h4>
-            <h4>Price: {{ product.price }}</h4>
             <div class="dates">
                 <p>{{ product.created_date }}</p>
                 <p>{{ product.modified_date }}</p>
@@ -49,10 +53,10 @@
                 </form>
             </div>
         {% endif %}
-        <div class="comments">
-            {% for comment in comments %}
-                <div class="comment_block">
-                    <h5>{{ comment.text }}</h5>
+        <div class="review">
+            {% for review in review %}
+                <div class="review_block">
+                    <h5>{{ review.text }}</h5>
                 </div>
             {% endfor %}
         </div>
