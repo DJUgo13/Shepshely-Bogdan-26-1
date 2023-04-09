@@ -2,63 +2,40 @@
 
 {% block content %}
     <style type="text/css">
-        .product_block {
-            width: 80%;
-            margin-left: 10%;
-            padding: 10px;
-        }
-
-        .dates {
+        .products{
             display: flex;
             justify-content: space-between;
-        }
-
-        .review {
-            margin-top: 30px;
-        }
-
-        .review_block {
-            background: #242b2e;
-            color: #fff;
-            padding: 10px;
-            margin-bottom: 20px;
-            border-radius: 5px;
-        }
-
-        .image > img {
-            max-width: 100%;
+            width: 80%;
+            margin-left: 10%;
+            margin-top: 20px;
+            flex-wrap: wrap;
         }
     </style>
-    <div class="product_block">
-        <div class="image">
-            {% if product.image %}
-                <img src="{{ product.image.url }}" alt="norm">
-            {% endif %}
-        </div>
-        <div class="info">
-            <h1>{{ product.name }}</h1>
-            <h4>Price: {{ product.price }}$</h4>
-            <h4>{{ product.description }}</h4>
-            <div class="dates">
-                <p>{{ product.created_date }}</p>
-                <p>{{ product.modified_date }}</p>
-            </div>
-        </div>
-        {% if not user.is_anonymous %}
-            <div class="create_review">
-                <form action="/products/{{ product.id }}/" method="post">
-                    {% csrf_token %}
-                    {{ form }}
-                    <input type="submit" value="Add comment">
-                </form>
-            </div>
-        {% endif %}
-        <div class="review">
-            {% for review in review %}
-                <div class="review_block">
-                    <h5>{{ review.text }}</h5>
+
+    <form action="/products/" method="get">
+        <input type="text" name="search">
+        <input type="submit" value="Search">
+    </form>
+
+    <div class="products">
+        {% for product in products %}
+            <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                    {% if product.image %}
+                        <img src="{{ product.image.url }}" alt="nothing">
+                    {% endif %}
+                    <h5 class="card-title">{{ product.title }}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">Quantity: {{ product.quantity }}</h6>
+                    <a href="/products/{{ product.id }}/" class="card-link">More</a>
                 </div>
-            {% endfor %}
-        </div>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="pages">
+        {% for page in pages %}
+            <a href="/products/?page={{ page }}">
+                <button>{{ page }}</button>
+            </a>
+        {% endfor %}
     </div>
 {% endblock %}
